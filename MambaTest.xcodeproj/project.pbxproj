@@ -8,20 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		B4B40399208764A7002F021A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B40398208764A7002F021A /* AppDelegate.swift */; };
-		B4B4039B208764A7002F021A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B4039A208764A7002F021A /* ViewController.swift */; };
+		B4B4039B208764A7002F021A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B4039A208764A7002F021A /* MainViewController.swift */; };
 		B4B4039E208764A7002F021A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4B4039C208764A7002F021A /* Main.storyboard */; };
 		B4B403A0208764A7002F021A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4B4039F208764A7002F021A /* Assets.xcassets */; };
 		B4B403A3208764A7002F021A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4B403A1208764A7002F021A /* LaunchScreen.storyboard */; };
+		B4B403AB208766E1002F021A /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B403AA208766E1002F021A /* City.swift */; };
+		B4B403AD20877B3B002F021A /* CitiesViewConrtoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B403AC20877B3B002F021A /* CitiesViewConrtoller.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B4B40395208764A7002F021A /* MambaTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MambaTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4B40398208764A7002F021A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B4B4039A208764A7002F021A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B4B4039A208764A7002F021A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B4B4039D208764A7002F021A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B4B4039F208764A7002F021A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B4B403A2208764A7002F021A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B4B403A4208764A7002F021A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B4B403AA208766E1002F021A /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		B4B403AC20877B3B002F021A /* CitiesViewConrtoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesViewConrtoller.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,11 +59,13 @@
 			isa = PBXGroup;
 			children = (
 				B4B40398208764A7002F021A /* AppDelegate.swift */,
-				B4B4039A208764A7002F021A /* ViewController.swift */,
+				B4B4039A208764A7002F021A /* MainViewController.swift */,
 				B4B4039C208764A7002F021A /* Main.storyboard */,
 				B4B4039F208764A7002F021A /* Assets.xcassets */,
 				B4B403A1208764A7002F021A /* LaunchScreen.storyboard */,
 				B4B403A4208764A7002F021A /* Info.plist */,
+				B4B403AA208766E1002F021A /* City.swift */,
+				B4B403AC20877B3B002F021A /* CitiesViewConrtoller.swift */,
 			);
 			path = MambaTest;
 			sourceTree = "<group>";
@@ -136,8 +142,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4B4039B208764A7002F021A /* ViewController.swift in Sources */,
+				B4B4039B208764A7002F021A /* MainViewController.swift in Sources */,
+				B4B403AD20877B3B002F021A /* CitiesViewConrtoller.swift in Sources */,
 				B4B40399208764A7002F021A /* AppDelegate.swift in Sources */,
+				B4B403AB208766E1002F021A /* City.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

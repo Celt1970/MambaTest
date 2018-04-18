@@ -8,10 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -19,7 +21,14 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    @IBAction func goToTableViewButton(_ sender: Any) {
 
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+
+        let nextVC = storyBoard.instantiateViewController(withIdentifier: "CitiesVC") as! CitiesViewConrtoller
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
 
 }
 
