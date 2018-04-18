@@ -9,7 +9,8 @@
 import UIKit
 
 class CitiesViewConrtoller: UIViewController {
-
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         customiseNavigationBar()
@@ -24,20 +25,26 @@ class CitiesViewConrtoller: UIViewController {
     func customiseNavigationBar(){
         self.navigationController?.navigationBar.isHidden = false
         let leftBarButton = UIBarButtonItem(title: "Изменить", style: .plain, target: self, action: nil)
-        let rightBarButton = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: nil)
+        let rightBarButton = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: #selector(goToPrevioousController))
         
         self.navigationItem.setLeftBarButton(leftBarButton, animated: false)
         self.navigationItem.setRightBarButton(rightBarButton, animated: false)
         self.navigationItem.title = "Города"
+        
     }
-    
+    @objc func goToPrevioousController(){
+        self.navigationController?.popViewController(animated: true)
+    }
     func styleUI(){
         let navBarHeight = (navigationController?.navigationBar.bounds.height)! + UIApplication.shared.statusBarFrame.size.height
-        
+//
         let frameForTableView = CGRect(x: 0, y: navBarHeight, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - navBarHeight)
-        let tableView = UITableView(frame: frameForTableView)
-        tableView.backgroundColor = UIColor.red
-        self.view.addSubview(tableView)
+        self.tableView.frame = frameForTableView
+        
+//        let tableView = UITableView(frame: frameForTableView)
+        self.tableView.backgroundColor = UIColor.red
+//        self.view.addSubview(tableView)
+        
     }
     
 
