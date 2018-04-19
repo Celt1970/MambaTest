@@ -11,7 +11,12 @@ import Foundation
 class CitiesViewModel {
     private var cities: [City] = [City(name: "Moscow", people: 15000000),
                                   City(name: "Saint-Petersburg", people: 10000000),
-                                  City(name: "Lipetsk", people: 650000)].sorted(by: {$0.name < $1.name})
+                                  City(name: "Lipetsk", people: 650000)]{
+        didSet{
+            cities = cities.sorted(by: {$0.people > $1.people})
+            self.initFetch()
+        }
+    }
     
     private var cellViewModels: [CityCellViewModel] = [CityCellViewModel]() {
         didSet {
@@ -34,10 +39,19 @@ class CitiesViewModel {
         self.processFetchedCities(cities: cities)
     }
     
+    func addCity(_ name: String, withPeople: String) {
+        guard let population = Int(withPeople.replacingOccurrences(of: " ", with: "")) else { return }
+        let city = City(name: name, people: population)
+        cities.append(city)
+    }
+    
+    func removeCity(at index: Int){
+        cities.remove(at: index)
+    }
     
     var reloadTableViewClosure: (()->())?
     var updateLoadingStatus: (()->())?
-    
+
     func getCellViewModel( at indexPath: IndexPath ) -> CityCellViewModel {
         return cellViewModels[indexPath.row]
     }

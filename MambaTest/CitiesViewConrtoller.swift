@@ -22,20 +22,13 @@ class CitiesViewConrtoller: UIViewController {
         self.tableView.dataSource = self
         
         customiseNavigationBar()
-        styleUI()
         initViewModel()
-        print(viewModel.numberOfCells)
-        // Do any additional setup after loading the view.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
     func customiseNavigationBar(){
         self.navigationController?.navigationBar.isHidden = false
-        let leftBarButton = UIBarButtonItem(title: "Изменить", style: .plain, target: self, action: nil)
-        let rightBarButton = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: #selector(goToPrevioousController))
+        let leftBarButton = UIBarButtonItem(title: "Изменить", style: .plain, target: self, action: #selector(showEditing(sender:)))
+        let rightBarButton = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: #selector(addNewCityButtonPressed))
         
         self.navigationItem.setLeftBarButton(leftBarButton, animated: false)
         self.navigationItem.setRightBarButton(rightBarButton, animated: false)
@@ -46,10 +39,28 @@ class CitiesViewConrtoller: UIViewController {
     @objc func goToPrevioousController(){
         self.navigationController?.popViewController(animated: true)
     }
-    func styleUI(){
-//
-        self.tableView.backgroundColor = UIColor.red
+    @objc func addNewCityButtonPressed(){
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextVC = storyBoard.instantiateViewController(withIdentifier: "AddCityViewController") as! AddCityViewController
+        self.navigationController?.pushViewController(nextVC, animated: true)
+        
     }
+    
+    @objc func showEditing(sender: UIBarButtonItem)
+    {
+        if(self.tableView.isEditing == true)
+        {
+            self.tableView.isEditing = false
+            self.navigationItem.leftBarButtonItem?.title = "Изменить"
+        }
+        else
+        {
+            self.tableView.isEditing = true
+            self.navigationItem.leftBarButtonItem?.title = "Готово"
+        }
+    }
+   
     
     func initViewModel() {
         viewModel.reloadTableViewClosure = { [weak self] () in
@@ -82,6 +93,12 @@ extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
         cell.peopleAmountLabel.text = cellVM.peopleAmount
 
         return cell
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            viewModel.removeCity(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+        }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
