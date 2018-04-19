@@ -24,24 +24,18 @@ class CitiesViewModel {
         }
     }
     
-    var isLoading: Bool = false {
-        didSet {
-            self.updateLoadingStatus?()
-        }
-    }
-    
     var numberOfCells: Int {
         return cellViewModels.count
     }
     
+    var reloadTableViewClosure: (()->())?
+
+    
     func initFetch() {
-        self.isLoading = true
         self.processFetchedCities(cities: cities)
     }
     
     func addCity(_ city: City) {
-//        guard let population = Int(withPeople.replacingOccurrences(of: " ", with: "")) else { return }
-//        let city = City(name: name, people: population)
         cities.append(city)
     }
     
@@ -49,9 +43,6 @@ class CitiesViewModel {
         cities.remove(at: index)
     }
     
-    var reloadTableViewClosure: (()->())?
-    var updateLoadingStatus: (()->())?
-
     func getCellViewModel( at indexPath: IndexPath ) -> CityCellViewModel {
         return cellViewModels[indexPath.row]
     }
@@ -59,8 +50,8 @@ class CitiesViewModel {
     func createCellViewModel( city: City ) -> CityCellViewModel {
         return CityCellViewModel(peopleAmount: String(city.people), cityName: city.name)
     }
+    
     private func processFetchedCities( cities: [City] ) {
-//        self.cities = cities
         var vms = [CityCellViewModel]()
         for city in cities {
             vms.append( createCellViewModel(city: city) )

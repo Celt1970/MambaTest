@@ -43,15 +43,12 @@ class AddCityViewController: UIViewController {
         
         self.navigationController?.navigationBar.isHidden = false
         let leftBarButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(canselButtonPressed))
-        
         let rightBarButton = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: #selector(addButtonPressed(_:)))
-        
         
         self.navigationItem.setRightBarButton(rightBarButton, animated: false)
         self.navigationItem.setLeftBarButton(leftBarButton, animated: false)
         self.navigationItem.title = "Новый город"
         self.navigationController?.navigationBar.isTranslucent = false
-        
     }
     
     func showAlert( _ message: String ) {

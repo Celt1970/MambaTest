@@ -49,6 +49,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA27F548208956A600ECAE53 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				AA5EBFA72087E6CF007ACF03 /* CityCellViewModel.swift */,
+				B4306B6620878CAE00C9CFA0 /* CityViewModel.swift */,
+				AA5EBFAB2089357C007ACF03 /* AddCityViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		AA27F549208956B800ECAE53 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B4306B6820878E4D00C9CFA0 /* CityCell.swift */,
+				B4B4039A208764A7002F021A /* MainViewController.swift */,
+				B4B403AC20877B3B002F021A /* CitiesViewConrtoller.swift */,
+				B41329C120888B1700730F11 /* AddCityViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		AA27F54A208956BF00ECAE53 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B4B403AA208766E1002F021A /* City.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		B4B4038C208764A7002F021A = {
 			isa = PBXGroup;
 			children = (
@@ -68,19 +97,14 @@
 		B4B40397208764A7002F021A /* MambaTest */ = {
 			isa = PBXGroup;
 			children = (
-				B4B40398208764A7002F021A /* AppDelegate.swift */,
-				B4306B6820878E4D00C9CFA0 /* CityCell.swift */,
-				B4B4039A208764A7002F021A /* MainViewController.swift */,
-				B4B4039C208764A7002F021A /* Main.storyboard */,
+				AA27F54A208956BF00ECAE53 /* Model */,
+				AA27F549208956B800ECAE53 /* View */,
+				AA27F548208956A600ECAE53 /* ViewModel */,
 				B4B4039F208764A7002F021A /* Assets.xcassets */,
+				B4B40398208764A7002F021A /* AppDelegate.swift */,
 				B4B403A1208764A7002F021A /* LaunchScreen.storyboard */,
+				B4B4039C208764A7002F021A /* Main.storyboard */,
 				B4B403A4208764A7002F021A /* Info.plist */,
-				B4B403AA208766E1002F021A /* City.swift */,
-				AA5EBFA72087E6CF007ACF03 /* CityCellViewModel.swift */,
-				B4B403AC20877B3B002F021A /* CitiesViewConrtoller.swift */,
-				B4306B6620878CAE00C9CFA0 /* CityViewModel.swift */,
-				B41329C120888B1700730F11 /* AddCityViewController.swift */,
-				AA5EBFAB2089357C007ACF03 /* AddCityViewModel.swift */,
 			);
 			path = MambaTest;
 			sourceTree = "<group>";

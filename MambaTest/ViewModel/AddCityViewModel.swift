@@ -30,8 +30,6 @@ class AddCityViewModel {
             return
         }
     }
-    
-    
 
     private func checkInputData(name: String, population: String) -> Bool{
         guard !(name.trimmingCharacters(in: .whitespaces).isEmpty ) &&
