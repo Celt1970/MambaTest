@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA5EBFA82087E6CF007ACF03 /* CityCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5EBFA72087E6CF007ACF03 /* CityCellViewModel.swift */; };
+		AA5EBFAC2089357C007ACF03 /* AddCityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA5EBFAB2089357C007ACF03 /* AddCityViewModel.swift */; };
 		B41329C220888B1700730F11 /* AddCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41329C120888B1700730F11 /* AddCityViewController.swift */; };
 		B4306B6720878CAE00C9CFA0 /* CityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4306B6620878CAE00C9CFA0 /* CityViewModel.swift */; };
 		B4306B6920878E4D00C9CFA0 /* CityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4306B6820878E4D00C9CFA0 /* CityCell.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		AA5EBFA72087E6CF007ACF03 /* CityCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCellViewModel.swift; sourceTree = "<group>"; };
+		AA5EBFAB2089357C007ACF03 /* AddCityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCityViewModel.swift; sourceTree = "<group>"; };
 		B41329C120888B1700730F11 /* AddCityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCityViewController.swift; sourceTree = "<group>"; };
 		B4306B6620878CAE00C9CFA0 /* CityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityViewModel.swift; sourceTree = "<group>"; };
 		B4306B6820878E4D00C9CFA0 /* CityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCell.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				B4B403AC20877B3B002F021A /* CitiesViewConrtoller.swift */,
 				B4306B6620878CAE00C9CFA0 /* CityViewModel.swift */,
 				B41329C120888B1700730F11 /* AddCityViewController.swift */,
+				AA5EBFAB2089357C007ACF03 /* AddCityViewModel.swift */,
 			);
 			path = MambaTest;
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 				B4B40399208764A7002F021A /* AppDelegate.swift in Sources */,
 				B4B403AB208766E1002F021A /* City.swift in Sources */,
 				B41329C220888B1700730F11 /* AddCityViewController.swift in Sources */,
+				AA5EBFAC2089357C007ACF03 /* AddCityViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

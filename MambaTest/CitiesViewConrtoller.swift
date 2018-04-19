@@ -11,6 +11,7 @@ import UIKit
 class CitiesViewConrtoller: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var activityLabel: UILabel!
     
     lazy var viewModel = {
         return CitiesViewModel()
@@ -20,9 +21,32 @@ class CitiesViewConrtoller: UIViewController {
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.allowsSelection = false
         
         customiseNavigationBar()
         initViewModel()
+        fetchData()
+
+    }
+    
+    func fetchData(){
+        self.activityIndicator.isHidden = false
+        self.tableView.isHidden = true
+        self.activityLabel.isHidden = false
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.navigationItem.leftBarButtonItem?.isEnabled = false
+
+        self.activityIndicator.startAnimating()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.isHidden = true
+            self.activityLabel.isHidden = true
+
+            self.tableView.isHidden = false
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+            self.navigationItem.leftBarButtonItem?.isEnabled = true
+        }
     }
     
     func customiseNavigationBar(){
@@ -34,12 +58,13 @@ class CitiesViewConrtoller: UIViewController {
         self.navigationItem.setRightBarButton(rightBarButton, animated: false)
         self.navigationItem.title = "Города"
         self.navigationController?.navigationBar.isTranslucent = false
-
+        
     }
     @objc func goToPrevioousController(){
         self.navigationController?.popViewController(animated: true)
     }
     @objc func addNewCityButtonPressed(){
+        self.tableView.isEditing = false
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
         let nextVC = storyBoard.instantiateViewController(withIdentifier: "AddCityViewController") as! AddCityViewController
@@ -47,20 +72,16 @@ class CitiesViewConrtoller: UIViewController {
         
     }
     
-    @objc func showEditing(sender: UIBarButtonItem)
-    {
-        if(self.tableView.isEditing == true)
-        {
+    @objc func showEditing(sender: UIBarButtonItem){
+        if self.tableView.isEditing == true {
             self.tableView.isEditing = false
             self.navigationItem.leftBarButtonItem?.title = "Изменить"
-        }
-        else
-        {
+        }else{
             self.tableView.isEditing = true
             self.navigationItem.leftBarButtonItem?.title = "Готово"
         }
     }
-   
+    
     
     func initViewModel() {
         viewModel.reloadTableViewClosure = { [weak self] () in
@@ -75,15 +96,15 @@ class CitiesViewConrtoller: UIViewController {
 
 
 extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfCells
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cityCellIdentifier", for: indexPath) as? CityCell else {
             fatalError("Cell doesn't exist!")
@@ -91,7 +112,7 @@ extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
         let cellVM = viewModel.getCellViewModel(at: indexPath)
         cell.cityNameLabel.text = cellVM.cityName
         cell.peopleAmountLabel.text = cellVM.peopleAmount
-
+        
         return cell
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -103,5 +124,5 @@ extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
-
+    
 }

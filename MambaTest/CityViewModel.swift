@@ -39,9 +39,9 @@ class CitiesViewModel {
         self.processFetchedCities(cities: cities)
     }
     
-    func addCity(_ name: String, withPeople: String) {
-        guard let population = Int(withPeople.replacingOccurrences(of: " ", with: "")) else { return }
-        let city = City(name: name, people: population)
+    func addCity(_ city: City) {
+//        guard let population = Int(withPeople.replacingOccurrences(of: " ", with: "")) else { return }
+//        let city = City(name: name, people: population)
         cities.append(city)
     }
     
