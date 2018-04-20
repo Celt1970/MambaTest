@@ -32,8 +32,8 @@ class AddCityViewModel {
     }
 
     private func checkInputData(name: String, population: String) -> Bool{
-        guard !(name.trimmingCharacters(in: .whitespaces).isEmpty ) &&
-        !(population.trimmingCharacters(in: .whitespaces).isEmpty) else {
+        if name.trimmingCharacters(in: .whitespaces).isEmpty  ||
+        population.trimmingCharacters(in: .whitespaces).isEmpty  {
             self.alertMessage = "Оба поля должны быть заполнены!"
             return false
         }

@@ -24,6 +24,14 @@ class CitiesViewModel {
         }
     }
     
+    var heightForRow: Double{
+        return 70.0
+    }
+    
+    var numberOfSections: Int{
+        return 1
+    }
+    
     var numberOfCells: Int {
         return cellViewModels.count
     }

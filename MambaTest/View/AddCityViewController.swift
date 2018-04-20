@@ -22,7 +22,7 @@ class AddCityViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        activityIndicator.accessibilityLabel = "hohoho"
+        configureGestures()
         configureUI()
         initVM()
     }
@@ -38,8 +38,7 @@ class AddCityViewController: UIViewController {
     }
     
     func configureUI(){
-        let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        self.view.addGestureRecognizer(tap)
+        
         
         self.navigationController?.navigationBar.isHidden = false
         let leftBarButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(canselButtonPressed))
@@ -51,6 +50,11 @@ class AddCityViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = false
     }
     
+    func configureGestures(){
+        let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
+    }
+    
     func showAlert( _ message: String ) {
         let alert = UIAlertController(title: "Ошибка", message: message, preferredStyle: .alert)
         alert.addAction( UIAlertAction(title: "Ok", style: .cancel, handler: nil))
@@ -59,8 +63,8 @@ class AddCityViewController: UIViewController {
     
     @IBAction func addButtonPressed(_ sender: Any) {
         viewModel.getCityFromData(name: cityNameTextField.text!, population: cityPopulationTextField.text!)
-      
-        guard let previousVC = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.count)! - 2] as? CitiesViewConrtoller else {
+        guard let lenght = self.navigationController?.viewControllers.count, lenght >= 2 else { return }
+        guard let previousVC = self.navigationController?.viewControllers[lenght - 2] as? CitiesViewConrtoller else {
             print("Wrong ViewController!")
             return
         }

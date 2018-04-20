@@ -13,6 +13,8 @@ class CitiesViewConrtoller: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var activityLabel: UILabel!
     
+    var isNotFirstAppearance = false
+    
     lazy var viewModel = {
         return CitiesViewModel()
     }()
@@ -65,10 +67,22 @@ class CitiesViewConrtoller: UIViewController {
     }
     @objc func addNewCityButtonPressed(){
         self.tableView.isEditing = false
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
         let nextVC = storyBoard.instantiateViewController(withIdentifier: "AddCityViewController") as! AddCityViewController
         self.navigationController?.pushViewController(nextVC, animated: true)
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        //Костыль что бы убрать подсветку rightBarButtonItem после перехода на другой контроллер. Баг появился в iOS 11.2
+        if isNotFirstAppearance{
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        }else{
+            isNotFirstAppearance = true
+        }
         
     }
     
@@ -98,7 +112,7 @@ class CitiesViewConrtoller: UIViewController {
 extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return viewModel.numberOfSections
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -122,7 +136,7 @@ extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return CGFloat(viewModel.heightForRow)
     }
     
 }
