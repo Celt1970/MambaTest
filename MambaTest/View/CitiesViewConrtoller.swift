@@ -13,7 +13,8 @@ class CitiesViewConrtoller: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var activityLabel: UILabel!
     
-    var isFirstAppearance = true
+    
+    var isFirstAppearance = true //Проверка, первый раз выводится view, или нет
     
     lazy var viewModel = {
         return CitiesViewModel()
@@ -30,63 +31,60 @@ class CitiesViewConrtoller: UIViewController {
         fetchData()
     }
     
-    func fetchData(){
+    //Эмуляция запроса к серверу
+    func fetchData() {
         self.activityIndicator.isHidden = false
         self.tableView.isHidden = true
         self.activityLabel.isHidden = false
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         self.navigationItem.leftBarButtonItem?.isEnabled = false
-
         self.activityIndicator.startAnimating()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.activityIndicator.stopAnimating()
             self.activityIndicator.isHidden = true
             self.activityLabel.isHidden = true
-
             self.tableView.isHidden = false
             self.navigationItem.rightBarButtonItem?.isEnabled = true
             self.navigationItem.leftBarButtonItem?.isEnabled = true
         }
     }
     
-    func customiseNavigationBar(){
+    func customiseNavigationBar() {
         self.navigationController?.navigationBar.isHidden = false
         let leftBarButton = UIBarButtonItem(title: "Изменить", style: .plain, target: self, action: #selector(showEditing(sender:)))
         let rightBarButton = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: #selector(addNewCityButtonPressed))
-        
         self.navigationItem.setLeftBarButton(leftBarButton, animated: false)
         self.navigationItem.setRightBarButton(rightBarButton, animated: false)
         self.navigationItem.title = "Города"
         self.navigationController?.navigationBar.isTranslucent = false
     }
     
-    @objc func addNewCityButtonPressed(){
+    //
+    @objc func addNewCityButtonPressed() {
         self.tableView.isEditing = false
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
-        self.navigationItem.rightBarButtonItem?.isEnabled = true
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
-        let nextVC = storyBoard.instantiateViewController(withIdentifier: "AddCityViewController") as! AddCityViewController
+        guard let nextVC = storyBoard.instantiateViewController(withIdentifier: "AddCityViewController") as? AddCityViewController else { return }
         nextVC.citiesVCDelegate = self
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
+    //MARK: Костыль что бы убрать подсветку rightBarButtonItem после перехода на другой контроллер. Баг появился в iOS 11.2
     override func viewWillAppear(_ animated: Bool) {
-        //MARK: Костыль что бы убрать подсветку rightBarButtonItem после перехода на другой контроллер. Баг появился в iOS 11.2
-        if isFirstAppearance{
+        if isFirstAppearance {
             isFirstAppearance = false
-        }else{
+        } else {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
     
-    @objc func showEditing(sender: UIBarButtonItem){
+    @objc func showEditing(sender: UIBarButtonItem) {
         if self.tableView.isEditing == true {
             self.tableView.isEditing = false
             self.navigationItem.leftBarButtonItem?.title = "Изменить"
-        }else{
+        } else {
             self.tableView.isEditing = true
             self.navigationItem.leftBarButtonItem?.title = "Готово"
         }
@@ -94,6 +92,7 @@ class CitiesViewConrtoller: UIViewController {
     
     
     func initViewModel() {
+        //Инициализация замфкания для обновления tableView
         viewModel.reloadTableViewClosure = { [weak self] () in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
@@ -103,7 +102,7 @@ class CitiesViewConrtoller: UIViewController {
     }
 }
 
-protocol CitiesViewDelegate{
+protocol CitiesViewDelegate {
     func addCityToViewModel(city: City)
 }
 

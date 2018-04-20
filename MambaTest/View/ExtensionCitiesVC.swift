@@ -31,7 +31,7 @@ extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete{
+        if editingStyle == .delete {
             viewModel.removeCity(at: indexPath.row)
             self.tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -42,7 +42,7 @@ extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension CitiesViewConrtoller: CitiesViewDelegate{
+extension CitiesViewConrtoller: CitiesViewDelegate {
     func addCityToViewModel(city: City) {
         self.viewModel.addCity(city)
     }

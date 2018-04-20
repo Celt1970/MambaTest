@@ -9,8 +9,6 @@
 import UIKit
 
 class CityCell: UITableViewCell {
-    
     @IBOutlet weak var peopleAmountLabel: UILabel!
     @IBOutlet weak var cityNameLabel: UILabel!
-    
 }

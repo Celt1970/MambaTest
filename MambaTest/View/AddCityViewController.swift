@@ -28,7 +28,8 @@ class AddCityViewController: UIViewController {
         initVM()
     }
     
-    func initVM(){
+    func initVM() {
+        //Инициализируем замыкание для вывода UIAlertView
         viewModel.showAlertClosure = { [weak self] () in
             DispatchQueue.main.async {
                 if let message = self?.viewModel.alertMessage {
@@ -38,7 +39,7 @@ class AddCityViewController: UIViewController {
         }
     }
     
-    func configureUI(){
+    func configureUI() {
         let leftBarButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(canselButtonPressed))
         let rightBarButton = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: #selector(addButtonPressed(_:)))
         self.navigationItem.setRightBarButton(rightBarButton, animated: false)
@@ -47,7 +48,8 @@ class AddCityViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = false
     }
     
-    func configureGestures(){
+    //Добавляем возможность убрать клавиатуру коснувшись экрана
+    func configureGestures() {
         let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tap)
     }
@@ -66,13 +68,16 @@ class AddCityViewController: UIViewController {
             print("City is nil")
             return
         }
+        
+        //передаем делегату город
         citiesVCDelegate?.addCityToViewModel(city: city)
-        fetchData(){ [weak self] in
+        fetchData() { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
     }
     
-    func fetchData( completion: @escaping () -> ()){
+    //Имитируем запрос к серверу
+    func fetchData( completion: @escaping () -> ()) {
         self.addButton.isHidden = true
         self.navigationItem.leftBarButtonItem?.isEnabled = false
         self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -81,7 +86,7 @@ class AddCityViewController: UIViewController {
         self.activityLabel.isHidden = false
         self.activityIndicator.startAnimating()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.activityIndicator.stopAnimating()
             self.activityIndicator.isHidden = true
             self.activityLabel.isHidden = true
@@ -94,7 +99,7 @@ class AddCityViewController: UIViewController {
         }
     }
     
-    @objc func dismissKeyboard(){
+    @objc func dismissKeyboard() {
         self.view.endEditing(true)
     }
     

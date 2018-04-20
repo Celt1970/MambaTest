@@ -11,6 +11,7 @@ import Foundation
 class AddCityViewModel {
     fileprivate var newCity: City?
     
+    //При изменении запускает замыкание
     var alertMessage: String? {
         didSet {
             self.showAlertClosure?()
@@ -30,7 +31,8 @@ class AddCityViewModel {
             return
         }
     }
-
+    
+    //Проверяем корректность введенных данных
     private func checkInputData(name: String, population: String) -> Bool{
         if name.trimmingCharacters(in: .whitespaces).isEmpty  ||
         population.trimmingCharacters(in: .whitespaces).isEmpty  {

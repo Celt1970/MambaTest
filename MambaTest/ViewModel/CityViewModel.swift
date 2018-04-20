@@ -13,6 +13,7 @@ class CitiesViewModel {
                                   City(name: "Saint-Petersburg", people: 10000000),
                                   City(name: "Lipetsk", people: 650000)]{
         didSet{
+            //При изменении cities, филтруем по населению и обновляем cellViewModels
             cities = cities.sorted(by: {$0.people > $1.people})
             self.initFetch()
         }
@@ -20,6 +21,7 @@ class CitiesViewModel {
     
     private var cellViewModels: [CityCellViewModel] = [CityCellViewModel]() {
         didSet {
+            //При изменении перезагружаем tableView
             self.reloadTableViewClosure?()
         }
     }
@@ -58,7 +60,8 @@ class CitiesViewModel {
     func createCellViewModel( city: City ) -> CityCellViewModel {
         return CityCellViewModel(peopleAmount: String(city.people), cityName: city.name)
     }
-    
+   
+    //проходит по массиву cities, и обновляет cellViewModels
     private func processFetchedCities( cities: [City] ) {
         var vms = [CityCellViewModel]()
         for city in cities {
