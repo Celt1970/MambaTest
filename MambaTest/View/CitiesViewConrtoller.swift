@@ -72,6 +72,7 @@ class CitiesViewConrtoller: UIViewController {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
         let nextVC = storyBoard.instantiateViewController(withIdentifier: "AddCityViewController") as! AddCityViewController
+        nextVC.citiesVCDelegate = self
         self.navigationController?.pushViewController(nextVC, animated: true)
         
     }
@@ -139,4 +140,14 @@ extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
         return CGFloat(viewModel.heightForRow)
     }
     
+}
+
+protocol CitiesViewDelegate{
+    func addCityToViewModel(city: City)
+}
+
+extension CitiesViewConrtoller: CitiesViewDelegate{
+    func addCityToViewModel(city: City) {
+        self.viewModel.addCity(city)
+    }
 }

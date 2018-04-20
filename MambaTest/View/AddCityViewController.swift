@@ -15,6 +15,7 @@ class AddCityViewController: UIViewController {
     @IBOutlet weak var cityNameTextField: UITextField!
     @IBOutlet weak var cityPopulationTextField: UITextField!
     @IBOutlet weak var addButton: UIButton!
+    var citiesVCDelegate: CitiesViewDelegate?
     
     var viewModel: AddCityViewModel = {
         return AddCityViewModel()
@@ -62,22 +63,16 @@ class AddCityViewController: UIViewController {
     }
     
     @IBAction func addButtonPressed(_ sender: Any) {
+        guard self.citiesVCDelegate != nil else { return }
         viewModel.getCityFromData(name: cityNameTextField.text!, population: cityPopulationTextField.text!)
-        guard let lenght = self.navigationController?.viewControllers.count, lenght >= 2 else { return }
-        guard let previousVC = self.navigationController?.viewControllers[lenght - 2] as? CitiesViewConrtoller else {
-            print("Wrong ViewController!")
-            return
-        }
-        
+
         guard let city = viewModel.city else {
             print("City is nil")
             return
         }
-        
-        previousVC.viewModel.addCity(city)
-        
+        citiesVCDelegate?.addCityToViewModel(city: city)
         fetchData(){ [weak self] in
-            self?.navigationController?.popToViewController(previousVC, animated: true)
+            self?.navigationController?.popViewController(animated: true)
         }
     }
     
