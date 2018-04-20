@@ -9,9 +9,13 @@
 import Foundation
 
 class CitiesViewModel {
-    private var cities: [City] = [City(name: "Moscow", people: 15000000),
-                                  City(name: "Saint-Petersburg", people: 10000000),
-                                  City(name: "Lipetsk", people: 650000)]{
+    private var cities: [City] = [City(name: "Москва", people: 12000000),
+                                  City(name: "Санкт-Петербург", people: 5191000),
+                                  City(name: "Чита", people: 343000),
+                                  City(name: "Пермь", people: 991000),
+                                  City(name: "Сургут", people: 348000),
+                                  City(name: "Мурманск", people: 301000),
+                                  City(name: "Липецк", people: 510000)]{
         didSet{
             //При изменении cities, филтруем по населению и обновляем cellViewModels
             cities = cities.sorted(by: {$0.people > $1.people})
