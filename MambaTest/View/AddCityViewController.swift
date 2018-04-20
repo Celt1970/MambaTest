@@ -39,12 +39,8 @@ class AddCityViewController: UIViewController {
     }
     
     func configureUI(){
-        
-        
-        self.navigationController?.navigationBar.isHidden = false
         let leftBarButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(canselButtonPressed))
         let rightBarButton = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: #selector(addButtonPressed(_:)))
-        
         self.navigationItem.setRightBarButton(rightBarButton, animated: false)
         self.navigationItem.setLeftBarButton(leftBarButton, animated: false)
         self.navigationItem.title = "Новый город"
@@ -65,7 +61,7 @@ class AddCityViewController: UIViewController {
     @IBAction func addButtonPressed(_ sender: Any) {
         guard self.citiesVCDelegate != nil else { return }
         viewModel.getCityFromData(name: cityNameTextField.text!, population: cityPopulationTextField.text!)
-
+        
         guard let city = viewModel.city else {
             print("City is nil")
             return
@@ -80,7 +76,7 @@ class AddCityViewController: UIViewController {
         self.addButton.isHidden = true
         self.navigationItem.leftBarButtonItem?.isEnabled = false
         self.navigationItem.rightBarButtonItem?.isEnabled = false
-
+        
         self.activityIndicator.isHidden = false
         self.activityLabel.isHidden = false
         self.activityIndicator.startAnimating()
@@ -89,11 +85,11 @@ class AddCityViewController: UIViewController {
             self.activityIndicator.stopAnimating()
             self.activityIndicator.isHidden = true
             self.activityLabel.isHidden = true
-
+            
             self.addButton.isHidden = false
             self.navigationItem.leftBarButtonItem?.isEnabled = true
             self.navigationItem.rightBarButtonItem?.isEnabled = true
-
+            
             completion()
         }
     }
@@ -101,7 +97,7 @@ class AddCityViewController: UIViewController {
     @objc func dismissKeyboard(){
         self.view.endEditing(true)
     }
-   
+    
     @objc func canselButtonPressed() {
         self.navigationController?.popViewController(animated: true)
     }

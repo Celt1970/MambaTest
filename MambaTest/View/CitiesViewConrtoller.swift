@@ -13,7 +13,7 @@ class CitiesViewConrtoller: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var activityLabel: UILabel!
     
-    var isNotFirstAppearance = false
+    var isFirstAppearance = true
     
     lazy var viewModel = {
         return CitiesViewModel()
@@ -28,7 +28,6 @@ class CitiesViewConrtoller: UIViewController {
         customiseNavigationBar()
         initViewModel()
         fetchData()
-
     }
     
     func fetchData(){
@@ -60,11 +59,8 @@ class CitiesViewConrtoller: UIViewController {
         self.navigationItem.setRightBarButton(rightBarButton, animated: false)
         self.navigationItem.title = "Города"
         self.navigationController?.navigationBar.isTranslucent = false
-        
     }
-    @objc func goToPrevioousController(){
-        self.navigationController?.popViewController(animated: true)
-    }
+    
     @objc func addNewCityButtonPressed(){
         self.tableView.isEditing = false
         self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -74,17 +70,16 @@ class CitiesViewConrtoller: UIViewController {
         let nextVC = storyBoard.instantiateViewController(withIdentifier: "AddCityViewController") as! AddCityViewController
         nextVC.citiesVCDelegate = self
         self.navigationController?.pushViewController(nextVC, animated: true)
-        
     }
+    
     override func viewWillAppear(_ animated: Bool) {
-        //Костыль что бы убрать подсветку rightBarButtonItem после перехода на другой контроллер. Баг появился в iOS 11.2
-        if isNotFirstAppearance{
+        //MARK: Костыль что бы убрать подсветку rightBarButtonItem после перехода на другой контроллер. Баг появился в iOS 11.2
+        if isFirstAppearance{
+            isFirstAppearance = false
+        }else{
             self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.navigationItem.rightBarButtonItem?.isEnabled = true
-        }else{
-            isNotFirstAppearance = true
         }
-        
     }
     
     @objc func showEditing(sender: UIBarButtonItem){
@@ -108,46 +103,8 @@ class CitiesViewConrtoller: UIViewController {
     }
 }
 
-
-
-extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.numberOfSections
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfCells
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cityCellIdentifier", for: indexPath) as? CityCell else {
-            fatalError("Cell doesn't exist!")
-        }
-        let cellVM = viewModel.getCellViewModel(at: indexPath)
-        cell.cityNameLabel.text = cellVM.cityName
-        cell.peopleAmountLabel.text = cellVM.peopleAmount
-        
-        return cell
-    }
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete{
-            viewModel.removeCity(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-    }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(viewModel.heightForRow)
-    }
-    
-}
-
 protocol CitiesViewDelegate{
     func addCityToViewModel(city: City)
 }
 
-extension CitiesViewConrtoller: CitiesViewDelegate{
-    func addCityToViewModel(city: City) {
-        self.viewModel.addCity(city)
-    }
-}
+
