@@ -46,4 +46,7 @@ extension CitiesViewConrtoller: CitiesViewDelegate {
     func addCityToViewModel(city: City) {
         self.viewModel.addCity(city)
     }
+    func checkIsCityAdded(city: City) -> Bool{
+       return viewModel.checkIsCityAdded(city: city)
+    }
 }

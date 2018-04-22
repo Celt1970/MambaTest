@@ -24,10 +24,16 @@ class AddCityViewModel {
     
     var showAlertClosure: (()->())?
     
-    func getCityFromData(name: String, population: String){
+    func getCityFromData(name: String, population: String, delegat: CitiesViewDelegate){
         if checkInputData(name: name, population: population) {
-            self.newCity = City(name: name.capitalized, people: Int(population)!)
-        }else{
+            let tempCity = City(name: name.capitalized, people: Int(population)!)
+            if delegat.checkIsCityAdded(city: tempCity ){
+                self.alertMessage = "Данный город уже добавлен в список!"
+                return
+            } else {
+                self.newCity = City(name: name.capitalized, people: Int(population)!)
+            }
+        } else {
             return
         }
     }

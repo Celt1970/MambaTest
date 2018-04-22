@@ -61,6 +61,11 @@ class CitiesViewModel {
         return cellViewModels[indexPath.row]
     }
     
+    func checkIsCityAdded(city: City) -> Bool {
+        let filteredCities = cities.filter({$0.name == city.name})
+        return filteredCities.count > 0
+    }
+    
     func createCellViewModel( city: City ) -> CityCellViewModel {
         return CityCellViewModel(peopleAmount: String(city.people), cityName: city.name)
     }

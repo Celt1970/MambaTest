@@ -104,6 +104,7 @@ class CitiesViewConrtoller: UIViewController {
 
 protocol CitiesViewDelegate {
     func addCityToViewModel(city: City)
+    func checkIsCityAdded(city: City) -> Bool
 }
 
 

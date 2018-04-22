@@ -62,7 +62,7 @@ class AddCityViewController: UIViewController {
     
     @IBAction func addButtonPressed(_ sender: Any) {
         guard self.citiesVCDelegate != nil else { return }
-        viewModel.getCityFromData(name: cityNameTextField.text!, population: cityPopulationTextField.text!)
+        viewModel.getCityFromData(name: cityNameTextField.text!, population: cityPopulationTextField.text!, delegat: self.citiesVCDelegate!)
         
         guard let city = viewModel.city else {
             print("City is nil")
