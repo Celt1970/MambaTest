@@ -16,6 +16,7 @@ class AddCityViewController: UIViewController {
     let cityNameTextFieldP = UITextField()
     let cityPopulationTextFieldP = UITextField()
     var textFieldsStackView = UIStackView()
+    var stackViewTopConstraint = NSLayoutConstraint()
     
     var citiesVCDelegate: CitiesViewDelegate?
     var viewModel: AddCityViewModel = {
@@ -79,21 +80,41 @@ class AddCityViewController: UIViewController {
         self.view.addSubview(addButtonP)
         
         let addButtonTopConstraint = NSLayoutConstraint(item: addButtonP, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: textFieldsStackView, attribute: .bottom, multiplier: 1, constant: 50)
-        addButtonTopConstraint.priority = UILayoutPriority(rawValue: 999.0)
+        addButtonTopConstraint.priority = UILayoutPriority.defaultHigh
         
         let addButtonBottomConstraint = NSLayoutConstraint(item: addButtonP, attribute: .bottom, relatedBy: .equal, toItem: self.view , attribute: .bottom, multiplier: 1, constant: -150)
-        addButtonBottomConstraint.priority = UILayoutPriority(rawValue: 250)
+        addButtonBottomConstraint.priority = UILayoutPriority.defaultLow
+        
+        if UIDevice.current.orientation.isLandscape {
+            stackViewTopConstraint = NSLayoutConstraint(item: textFieldsStackView, attribute: .top, relatedBy: .equal, toItem: self.view , attribute: .top, multiplier: 1, constant: 50)
+        } else {
+            stackViewTopConstraint = NSLayoutConstraint(item: textFieldsStackView, attribute: .top, relatedBy: .equal, toItem: self.view , attribute: .top, multiplier: 1, constant: 150)
+        }
         
         self.view.addConstraints([
             addButtonBottomConstraint,
             addButtonTopConstraint,
             NSLayoutConstraint(item: addButtonP, attribute: .centerX, relatedBy: .equal, toItem: self.view , attribute: .centerX, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: textFieldsStackView, attribute: .top, relatedBy: .equal, toItem: self.view , attribute: .top, multiplier: 1, constant: 150),
+            stackViewTopConstraint,
             NSLayoutConstraint(item: textFieldsStackView, attribute: .leading, relatedBy: .equal, toItem: self.view , attribute: .leading, multiplier: 1, constant: 20),
             NSLayoutConstraint(item: textFieldsStackView, attribute: .trailing, relatedBy: .equal, toItem: self.view , attribute: .trailing, multiplier: 1, constant: -20),
             NSLayoutConstraint(item: textFieldsStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80)
             ])
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if UIDevice.current.orientation.isLandscape {
+            self.view.removeConstraint(stackViewTopConstraint)
+            stackViewTopConstraint = NSLayoutConstraint(item: textFieldsStackView, attribute: .top, relatedBy: .equal, toItem: self.view , attribute: .top, multiplier: 1, constant: 50)
+            self.view.addConstraint(stackViewTopConstraint)
+        } else {
+            self.view.removeConstraint(stackViewTopConstraint)
+            stackViewTopConstraint = NSLayoutConstraint(item: textFieldsStackView, attribute: .top, relatedBy: .equal, toItem: self.view , attribute: .top, multiplier: 1, constant: 150)
+            self.view.addConstraint(stackViewTopConstraint)
+        }
+    }
+    
+    
     
     //Добавляем возможность убрать клавиатуру коснувшись экрана
     func configureGestures() {
