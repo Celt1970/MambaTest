@@ -10,21 +10,22 @@ import UIKit
 
 class AddCityViewController: UIViewController {
     
-    @IBOutlet weak var activityLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var cityNameTextField: UITextField!
-    @IBOutlet weak var cityPopulationTextField: UITextField!
-    @IBOutlet weak var addButton: UIButton!
-    var citiesVCDelegate: CitiesViewDelegate?
+    let activityIndicatorP = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    let activityLabelP = UILabel()
+    let addButtonP = UIButton()
+    let cityNameTextFieldP = UITextField()
+    let cityPopulationTextFieldP = UITextField()
+    var textFieldsStackView = UIStackView()
     
+    var citiesVCDelegate: CitiesViewDelegate?
     var viewModel: AddCityViewModel = {
         return AddCityViewModel()
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureGestures()
         configureUI()
+        configureGestures()
         initVM()
     }
     
@@ -40,12 +41,50 @@ class AddCityViewController: UIViewController {
     }
     
     func configureUI() {
+        self.view.backgroundColor = .white
         let leftBarButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(canselButtonPressed))
         let rightBarButton = UIBarButtonItem(title: "Добавить", style: .plain, target: self, action: #selector(addButtonPressed(_:)))
         self.navigationItem.setRightBarButton(rightBarButton, animated: false)
         self.navigationItem.setLeftBarButton(leftBarButton, animated: false)
         self.navigationItem.title = "Новый город"
         self.navigationController?.navigationBar.isTranslucent = false
+        
+        cityNameTextFieldP.borderStyle = .roundedRect
+        cityPopulationTextFieldP.borderStyle = .roundedRect
+        let placeholderAttributes: [NSAttributedStringKey : NSObject] = [NSAttributedStringKey.foregroundColor  : UIColor.gray, NSAttributedStringKey.font : UIFont(name: "Helvetica", size: 15)!]
+        
+        cityNameTextFieldP.attributedPlaceholder = NSAttributedString(string: "Введите имя города...", attributes: placeholderAttributes)
+        
+        cityPopulationTextFieldP.attributedPlaceholder = NSAttributedString(string: "И его население...", attributes: placeholderAttributes)
+        
+        cityNameTextFieldP.addTarget(self, action: #selector(addButtonPressed(_:)), for: .primaryActionTriggered)
+        cityPopulationTextFieldP.addTarget(self, action: #selector(addButtonPressed(_:)), for: .primaryActionTriggered)
+        
+        textFieldsStackView.translatesAutoresizingMaskIntoConstraints = false
+        textFieldsStackView.addArrangedSubview(cityNameTextFieldP)
+        textFieldsStackView.addArrangedSubview(cityPopulationTextFieldP)
+        
+        textFieldsStackView.axis = .vertical
+        textFieldsStackView.distribution = .fillEqually
+        textFieldsStackView.alignment = .fill
+        textFieldsStackView.spacing = 20
+        self.view.addSubview(textFieldsStackView)
+        
+        addButtonP.setTitle("Добавить", for: .normal)
+        addButtonP.titleLabel?.font = UIFont(name: "Helvetica", size: 17)
+        addButtonP.setTitleColor(.blue, for: .normal)
+        addButtonP.translatesAutoresizingMaskIntoConstraints = false
+        addButtonP.addTarget(self, action: #selector(addButtonPressed(_:)), for: .touchUpInside)
+        
+        self.view.addSubview(addButtonP)
+        self.view.addConstraints([
+            NSLayoutConstraint(item: addButtonP, attribute: .bottom, relatedBy: .equal, toItem: self.view , attribute: .bottom, multiplier: 1, constant: -150),
+            NSLayoutConstraint(item: addButtonP, attribute: .centerX, relatedBy: .equal, toItem: self.view , attribute: .centerX, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: textFieldsStackView, attribute: .top, relatedBy: .equal, toItem: self.view , attribute: .top, multiplier: 1, constant: 150),
+            NSLayoutConstraint(item: textFieldsStackView, attribute: .leading, relatedBy: .equal, toItem: self.view , attribute: .leading, multiplier: 1, constant: 20),
+            NSLayoutConstraint(item: textFieldsStackView, attribute: .trailing, relatedBy: .equal, toItem: self.view , attribute: .trailing, multiplier: 1, constant: -20),
+            NSLayoutConstraint(item: textFieldsStackView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 80)
+            ])
     }
     
     //Добавляем возможность убрать клавиатуру коснувшись экрана
@@ -60,17 +99,16 @@ class AddCityViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func addButtonPressed(_ sender: Any) {
+    @objc func addButtonPressed(_ sender: Any) {
         guard self.citiesVCDelegate != nil else { return }
-        viewModel.getCityFromData(name: cityNameTextField.text!, population: cityPopulationTextField.text!, delegat: self.citiesVCDelegate!)
+        viewModel.getCityFromData(name: cityNameTextFieldP.text!, population: cityPopulationTextFieldP.text!, delegat: self.citiesVCDelegate!)
         
         guard let city = viewModel.city else {
             print("City is nil")
             return
         }
-        
-        //передаем делегату город
-        citiesVCDelegate?.addCityToViewModel(city: city)
+        citiesVCDelegate?.addCityToViewModel(city: city)//передаем делегату город
+        self.view.endEditing(true)
         fetchData() { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
@@ -78,23 +116,38 @@ class AddCityViewController: UIViewController {
     
     //Имитируем запрос к серверу
     func fetchData( completion: @escaping () -> ()) {
-        self.addButton.isHidden = true
+        
+        activityLabelP.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorP.translatesAutoresizingMaskIntoConstraints = false
+        activityLabelP.text = "Отправка данных..."
+        activityLabelP.font = UIFont(name: "Helvetica", size: 14)
+        activityLabelP.textColor = .lightGray
+        
+        let activityCenterXConstraint = NSLayoutConstraint(item: activityIndicatorP, attribute: .centerX, relatedBy: .equal, toItem: addButtonP , attribute: .centerX, multiplier: 1, constant: 0)
+        let activityCenterYConstraintr = NSLayoutConstraint(item: activityIndicatorP, attribute: .centerY, relatedBy: .equal, toItem: addButtonP , attribute: .centerY, multiplier: 1, constant: 0)
+        
+        let activityLabelTopConstraint = NSLayoutConstraint(item: activityLabelP , attribute: .top, relatedBy: .equal, toItem: activityIndicatorP, attribute: .bottom, multiplier: 1, constant: 20)
+        let activityLabelCenterXConstraint = NSLayoutConstraint(item: activityLabelP, attribute: .centerX, relatedBy: .equal, toItem: addButtonP , attribute: .centerX, multiplier: 1, constant: 0)
+        self.view.addSubview(activityLabelP)
+        self.view.addSubview(activityIndicatorP)
+        self.view.addConstraints([activityCenterXConstraint, activityCenterYConstraintr, activityLabelTopConstraint, activityLabelCenterXConstraint])
+        
+        self.addButtonP.isHidden = true
         self.navigationItem.leftBarButtonItem?.isEnabled = false
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
-        self.activityIndicator.isHidden = false
-        self.activityLabel.isHidden = false
-        self.activityIndicator.startAnimating()
+        self.activityIndicatorP.isHidden = false
+        self.activityLabelP.isHidden = false
+        self.activityIndicatorP.startAnimating()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-            self.activityLabel.isHidden = true
-            
-            self.addButton.isHidden = false
+            self.activityIndicatorP.stopAnimating()
+            self.view.removeConstraints([activityCenterXConstraint, activityCenterYConstraintr, activityLabelTopConstraint, activityLabelCenterXConstraint])
+            self.activityIndicatorP.removeFromSuperview()
+            self.activityLabelP.removeFromSuperview()
+            self.addButtonP.isHidden = false
             self.navigationItem.leftBarButtonItem?.isEnabled = true
             self.navigationItem.rightBarButtonItem?.isEnabled = true
-            
             completion()
         }
     }

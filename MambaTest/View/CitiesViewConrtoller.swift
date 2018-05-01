@@ -9,10 +9,9 @@
 import UIKit
 
 class CitiesViewConrtoller: UIViewController {
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var activityLabel: UILabel!
-    
+    var tableViewP = UITableView(frame: .zero)
+    let activityLabelP = UILabel()
+    let activityIndicatorP = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
     
     var isFirstAppearance = true //Проверка, первый раз выводится view, или нет
     
@@ -22,10 +21,7 @@ class CitiesViewConrtoller: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.allowsSelection = false
-        
+        configureUI()
         customiseNavigationBar()
         initViewModel()
         fetchData()
@@ -33,18 +29,36 @@ class CitiesViewConrtoller: UIViewController {
     
     //Эмуляция запроса к серверу
     func fetchData() {
-        self.activityIndicator.isHidden = false
-        self.tableView.isHidden = true
-        self.activityLabel.isHidden = false
+        activityLabelP.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorP.translatesAutoresizingMaskIntoConstraints = false
+        
+        activityLabelP.text = "Загрузка данных..."
+        activityLabelP.font = UIFont(name: "Helvetica", size: 14)
+        activityLabelP.textColor = .lightGray
+        
+        let activityCenterXConstraint = NSLayoutConstraint(item: activityIndicatorP, attribute: .centerX, relatedBy: .equal, toItem: self.view , attribute: .centerX, multiplier: 1, constant: 0)
+        let activityCenterYConstraintr = NSLayoutConstraint(item: activityIndicatorP, attribute: .centerY, relatedBy: .equal, toItem: self.view , attribute: .centerY, multiplier: 1, constant: 0)
+        
+        let activityLabelTopConstraint = NSLayoutConstraint(item: activityLabelP , attribute: .top, relatedBy: .equal, toItem: activityIndicatorP, attribute: .bottom, multiplier: 1, constant: 20)
+        let activityLabelCenterXConstraint = NSLayoutConstraint(item: activityLabelP, attribute: .centerX, relatedBy: .equal, toItem: self.view , attribute: .centerX, multiplier: 1, constant: 0)
+        self.view.addSubview(activityLabelP)
+        self.view.addSubview(activityIndicatorP)
+        self.view.addConstraints([activityCenterXConstraint, activityCenterYConstraintr, activityLabelTopConstraint, activityLabelCenterXConstraint])
+        
+        activityIndicatorP.isHidden = false
+        activityLabelP.isHidden = false
+        activityIndicatorP.startAnimating()
+        
+        self.tableViewP.isHidden = true
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         self.navigationItem.leftBarButtonItem?.isEnabled = false
-        self.activityIndicator.startAnimating()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.activityIndicator.stopAnimating()
-            self.activityIndicator.isHidden = true
-            self.activityLabel.isHidden = true
-            self.tableView.isHidden = false
+            self.activityIndicatorP.stopAnimating()
+            self.view.removeConstraints([activityCenterXConstraint, activityCenterYConstraintr, activityLabelTopConstraint, activityLabelCenterXConstraint])
+            self.activityIndicatorP.removeFromSuperview()
+            self.activityLabelP.removeFromSuperview()
+            self.tableViewP.isHidden = false
             self.navigationItem.rightBarButtonItem?.isEnabled = true
             self.navigationItem.leftBarButtonItem?.isEnabled = true
         }
@@ -60,12 +74,24 @@ class CitiesViewConrtoller: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = false
     }
     
-    //
-    @objc func addNewCityButtonPressed() {
-        self.tableView.isEditing = false
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+    func configureUI() {
+        tableViewP.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(tableViewP)
+        self.tableViewP.delegate = self
+        self.tableViewP.dataSource = self
+        self.tableViewP.allowsSelection = false
         
-        guard let nextVC = storyBoard.instantiateViewController(withIdentifier: "AddCityViewController") as? AddCityViewController else { return }
+        self.view.addConstraints ([
+            NSLayoutConstraint(item: tableViewP, attribute: .top, relatedBy: .equal, toItem: self.view.safeAreaLayoutGuide, attribute: .top, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: tableViewP, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: tableViewP, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: tableViewP, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: 0)
+            ])
+    }
+
+    @objc func addNewCityButtonPressed() {
+        self.tableViewP.isEditing = false
+        let nextVC = AddCityViewController()
         nextVC.citiesVCDelegate = self
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
@@ -81,30 +107,24 @@ class CitiesViewConrtoller: UIViewController {
     }
     
     @objc func showEditing(sender: UIBarButtonItem) {
-        if self.tableView.isEditing == true {
-            self.tableView.isEditing = false
+        if self.tableViewP.isEditing == true {
+            self.tableViewP.isEditing = false
             self.navigationItem.leftBarButtonItem?.title = "Изменить"
         } else {
-            self.tableView.isEditing = true
+            self.tableViewP.isEditing = true
             self.navigationItem.leftBarButtonItem?.title = "Готово"
         }
     }
-    
     
     func initViewModel() {
         //Инициализация замфкания для обновления tableView
         viewModel.reloadTableViewClosure = { [weak self] () in
             DispatchQueue.main.async {
-                self?.tableView.reloadData()
+                self?.tableViewP.reloadData()
             }
         }
         viewModel.initFetch()
     }
-}
-
-protocol CitiesViewDelegate {
-    func addCityToViewModel(city: City)
-    func checkIsCityAdded(city: City) -> Bool
 }
 
 

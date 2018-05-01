@@ -9,6 +9,12 @@
 import Foundation
 import UIKit
 
+
+protocol CitiesViewDelegate {
+    func addCityToViewModel(city: City)
+    func checkIsCityAdded(city: City) -> Bool
+}
+
 extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -20,12 +26,11 @@ extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cityCellIdentifier", for: indexPath) as? CityCell else {
-            fatalError("Cell doesn't exist!")
-        }
+        let cell = CityCell(style: .default, reuseIdentifier: "cityCell")
+
         let cellVM = viewModel.getCellViewModel(at: indexPath)
-        cell.cityNameLabel.text = cellVM.cityName
-        cell.peopleAmountLabel.text = cellVM.peopleAmount
+        cell.cityNameLabelP.text = cellVM.cityName
+        cell.populationLabelP.text = cellVM.peopleAmount
         
         return cell
     }
@@ -33,7 +38,7 @@ extension CitiesViewConrtoller: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             viewModel.removeCity(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .fade)
+            self.tableViewP.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
@@ -46,7 +51,7 @@ extension CitiesViewConrtoller: CitiesViewDelegate {
     func addCityToViewModel(city: City) {
         self.viewModel.addCity(city)
     }
-    func checkIsCityAdded(city: City) -> Bool{
+    func checkIsCityAdded(city: City) -> Bool {
        return viewModel.checkIsCityAdded(city: city)
     }
 }
