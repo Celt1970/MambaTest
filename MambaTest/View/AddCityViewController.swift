@@ -77,8 +77,16 @@ class AddCityViewController: UIViewController {
         addButtonP.addTarget(self, action: #selector(addButtonPressed(_:)), for: .touchUpInside)
         
         self.view.addSubview(addButtonP)
+        
+        let addButtonTopConstraint = NSLayoutConstraint(item: addButtonP, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: textFieldsStackView, attribute: .bottom, multiplier: 1, constant: 50)
+        addButtonTopConstraint.priority = UILayoutPriority(rawValue: 999.0)
+        
+        let addButtonBottomConstraint = NSLayoutConstraint(item: addButtonP, attribute: .bottom, relatedBy: .equal, toItem: self.view , attribute: .bottom, multiplier: 1, constant: -150)
+        addButtonBottomConstraint.priority = UILayoutPriority(rawValue: 250)
+        
         self.view.addConstraints([
-            NSLayoutConstraint(item: addButtonP, attribute: .bottom, relatedBy: .equal, toItem: self.view , attribute: .bottom, multiplier: 1, constant: -150),
+            addButtonBottomConstraint,
+            addButtonTopConstraint,
             NSLayoutConstraint(item: addButtonP, attribute: .centerX, relatedBy: .equal, toItem: self.view , attribute: .centerX, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: textFieldsStackView, attribute: .top, relatedBy: .equal, toItem: self.view , attribute: .top, multiplier: 1, constant: 150),
             NSLayoutConstraint(item: textFieldsStackView, attribute: .leading, relatedBy: .equal, toItem: self.view , attribute: .leading, multiplier: 1, constant: 20),
