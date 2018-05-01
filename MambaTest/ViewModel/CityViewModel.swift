@@ -15,7 +15,7 @@ class CitiesViewModel {
                                   City(name: "Пермь", people: 991000),
                                   City(name: "Сургут", people: 348000),
                                   City(name: "Мурманск", people: 301000),
-                                  City(name: "Липецк", people: 510000)]{
+                                  City(name: "Липецк", people: 510000)].sorted(by: {$0.people > $1.people}){
         didSet{
             //При изменении cities, филтруем по населению и обновляем cellViewModels
             cities = cities.sorted(by: {$0.people > $1.people})
